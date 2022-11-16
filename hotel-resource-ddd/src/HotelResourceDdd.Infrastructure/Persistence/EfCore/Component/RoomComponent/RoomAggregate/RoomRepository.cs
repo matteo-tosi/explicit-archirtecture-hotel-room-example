@@ -21,10 +21,10 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.RoomCompo
         }
 
         public void Add(Room entity)
-            => _ = _context.Add(ConvertByModel(entity));
+            => _ = _context.Add(RoomDb.ConvertByModel(entity));
 
         public void AddRange(IEnumerable<Room> entities)
-            => _ = _context.Add(entities.Select(e => ConvertByModel(e)));
+            => _ = _context.Add(entities.Select(e => RoomDb.ConvertByModel(e)));
 
         public async Task<IEnumerable<Room>> FindAsync(
             Expression<Func<Room, bool>> predicate, CancellationToken cancellationToken = default)
@@ -32,7 +32,7 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.RoomCompo
             var expressionConverter = new ExpressionConverter<Room, RoomDb>();
 
             return await _context.Room.Where((Expression<Func<RoomDb, bool>>)expressionConverter.ConvertPredicate(predicate))
-                .Select(e => ConvertToModel(e))
+                .Select(e => e.ConvertToModel())
                 .ToListAsync(cancellationToken);
         }
 
@@ -68,17 +68,5 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.RoomCompo
         public Task<Room> SingleOrDefaultAsync(
             Expression<Func<Room, bool>> predicate, CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
-
-        private static Room ConvertToModel(RoomDb entity)
-            => new(new RoomId(entity.Id), new Core.SharedKernel.ValueObject.LicenseNumber(entity.LicenseNumber), entity.Name);
-
-        private static RoomDb ConvertByModel(Room entity)
-            => new()
-            {
-                Id = entity.Id.Value,
-                LicenseNumber = entity.LicenseNumber.Value,
-                Name = entity.Name,
-                State = entity.State
-            };
     }
 }

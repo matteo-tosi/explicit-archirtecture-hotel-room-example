@@ -4,7 +4,7 @@ using HotelResourceDdd.Core.SharedKernel.ValueObject;
 
 namespace HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate.Event
 {
-    internal class NewOutOfServiceAddedEvent : AbstractNotification
+    public class NewOutOfServiceAddedEvent : AbstractNotification
     {
         public LicenseNumber LicenseNumber { get; private set; }
         public OutOfServiceId OutOfServiceId { get; private set; }

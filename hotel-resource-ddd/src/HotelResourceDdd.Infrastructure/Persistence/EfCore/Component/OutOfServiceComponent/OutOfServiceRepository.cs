@@ -3,7 +3,6 @@ using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Reposito
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Domain.OutOfServiceAggregate;
 using HotelResourceDdd.Core.Port.EventManager;
 using HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate;
-using HotelResourceDdd.Core.SharedKernel.Component.RoomComponent.RoomAggregate;
 using HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.OutOfServiceComponent.OutOfServiceAggregate.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -22,10 +21,10 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.OutOfServ
         }
 
         public void Add(OutOfService entity)
-            => _ = _context.Add(ConvertByModel(entity));
+            => _ = _context.Add(OutOfServiceDb.ConvertByModel(entity));
 
         public void AddRange(IEnumerable<OutOfService> entities)
-            => _ = _context.Add(entities.Select(e => ConvertByModel(e)));
+            => _ = _context.Add(entities.Select(e => OutOfServiceDb.ConvertByModel(e)));
 
         public async Task<IEnumerable<OutOfService>> FindAsync(
             Expression<Func<OutOfService, bool>> predicate,
@@ -34,7 +33,7 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.OutOfServ
             var expressionConverter = new ExpressionConverter<OutOfService, OutOfServiceDb>();
 
             return await _context.OutOfService.Where((Expression<Func<OutOfServiceDb, bool>>)expressionConverter.ConvertPredicate(predicate))
-                .Select(e => ConvertToModel(e))
+                .Select(e => e.ConvertToModel())
                 .ToListAsync(cancellationToken);
         }
 
@@ -73,19 +72,5 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.OutOfServ
             Expression<Func<OutOfService, bool>> predicate,
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
-
-        private static OutOfService ConvertToModel(OutOfServiceDb entity)
-            => new(new OutOfServiceId(entity.Id), new Core.SharedKernel.ValueObject.LicenseNumber(entity.LicenseNumber),
-                new RoomId(entity.RoomId), entity.In, entity.Out);
-
-        private static OutOfServiceDb ConvertByModel(OutOfService entity)
-            => new()
-            {
-                Id = entity.Id.Value,
-                LicenseNumber = entity.LicenseNumber.Value,
-                RoomId = entity.RoomId.Value,
-                In = entity.In,
-                Out = entity.Out
-            };
     }
 }
