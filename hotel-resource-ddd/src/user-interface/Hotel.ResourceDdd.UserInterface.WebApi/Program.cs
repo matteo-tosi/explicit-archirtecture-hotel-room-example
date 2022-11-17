@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 // La connectionstring viene injectata in questo frangente, così da non averla sparsa per il codice.
 // Inoltre è stato deciso di usare ServiceLifetime.Scoped per non perdere la funzionalità di "transazione" poichè se si
 // utilizza .Transient viene creato un context per ogni classe
-_ = builder.Services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Singleton/*options =>
+_ = builder.Services.AddDbContext<ApplicationDbContext>(/*options =>
     options.UseSqlServer(
         configuration.GetConnectionString(GlobalConstants.ConnectionsStringNames.Database.DB_ZHOSPITALITY)),
     ServiceLifetime.Scoped*/);
@@ -31,11 +31,11 @@ builder.Services.AddMemoryCache();
 var assembly = AppDomain.CurrentDomain.Load("DotNetExtensions");
 _ = builder.Services.AddMediatR(assembly);
 
-builder.Services.AddSingleton<IEventPublisher, EventPublisher>();
+builder.Services.AddScoped<IEventPublisher, EventPublisher>();
 
-builder.Services.AddSingleton<IOutOfServiceQuery, OutOfServiceQuery>();
-builder.Services.AddSingleton<IOutOfServiceRepository, OutOfServiceRepository>();
-builder.Services.AddSingleton<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IOutOfServiceQuery, OutOfServiceQuery>();
+builder.Services.AddScoped<IOutOfServiceRepository, OutOfServiceRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 
 // INFO: Using https://www.nuget.org/packages/Scrutor for registering all Query and Command handlers by convention
 // 'FromApplicationDependencies' because handlers are in different assembly "HotelResourseDdd.Core"
@@ -44,7 +44,7 @@ builder.Services.Scan(selector =>
         .AddClasses(filter =>
             filter.AssignableTo(typeof(IBroadcastEventHandler<>)))
         .AsImplementedInterfaces()
-        .WithSingletonLifetime());
+        .WithScopedLifetime());
 
 // INFO: Using https://www.nuget.org/packages/Scrutor for registering all Query and Command handlers by convention
 // 'FromApplicationDependencies' because handlers are in different assembly "HotelResourseDdd.Core"
@@ -53,7 +53,7 @@ builder.Services.Scan(selector =>
         .AddClasses(filter =>
             filter.AssignableTo(typeof(ISingleEventHandler<,>)))
         .AsImplementedInterfaces()
-        .WithSingletonLifetime());
+        .WithScopedLifetime());
 
 var app = builder.Build();
 
