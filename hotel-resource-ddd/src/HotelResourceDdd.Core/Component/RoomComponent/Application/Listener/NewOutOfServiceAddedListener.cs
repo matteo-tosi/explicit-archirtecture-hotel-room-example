@@ -1,10 +1,10 @@
-﻿using DotNetExtension.Mediator;
+﻿using DotNetExtensions.DomainAbstraction.Event;
 using HotelResourceDdd.Core.Component.RoomComponent.Application.Repository;
 using HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate.Event;
 
 namespace HotelResourceDdd.Core.Component.RoomComponent.Application.Listener
 {
-    public class NewOutOfServiceAddedListener : IEventHandlerMoreListener<NewOutOfServiceAddedEvent>
+    public class NewOutOfServiceAddedListener : AbstractNotificationHandler<NewOutOfServiceAddedEvent>
     {
         private readonly IRoomRepository _roomRepository;
 
@@ -13,7 +13,7 @@ namespace HotelResourceDdd.Core.Component.RoomComponent.Application.Listener
             _roomRepository = roomRepository;
         }
 
-        public async Task Handle(NewOutOfServiceAddedEvent notification, CancellationToken cancellationToken = default)
+        public async override Task Handle(NewOutOfServiceAddedEvent notification, CancellationToken cancellationToken = default)
         {
             var room = await _roomRepository.LoadAsync(notification.RoomId, cancellationToken: cancellationToken);
 
