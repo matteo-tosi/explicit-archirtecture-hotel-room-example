@@ -4,7 +4,7 @@ using HotelResourceDdd.Core.SharedKernel.ValueObject;
 
 namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.RoomComponent.RoomAggregate.Model
 {
-    internal sealed class RoomDb
+    public sealed class RoomDb
     {
         public int Id { get; set; }
         public int LicenseNumber { get; set; }

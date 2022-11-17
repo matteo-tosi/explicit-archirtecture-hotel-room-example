@@ -1,8 +1,8 @@
-﻿using DotNetExtensions.DomainAbstraction.Event;
+﻿using DotNetExtensions.CqrsAbstraction.Query;
 
 namespace HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Query.GetOutOfServiceValidity
 {
-    internal class GetOutOfServiceValidityQueryHandler : AbstractEventHandler<GetOutOfServiceValidityQuery, GetOutOfServiceValidityQueryResponse?>
+    internal class GetOutOfServiceValidityQueryHandler : IQueryHandler<GetOutOfServiceValidityQuery, GetOutOfServiceValidityQueryResponse?>
     {
         private readonly IOutOfServiceQuery _outOfServiceQuery;
         public GetOutOfServiceValidityQueryHandler(IOutOfServiceQuery outOfServiceQuery)
@@ -10,9 +10,7 @@ namespace HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Quer
             _outOfServiceQuery = outOfServiceQuery;
         }
 
-        public override async Task<GetOutOfServiceValidityQueryResponse?> Handle(GetOutOfServiceValidityQuery request, CancellationToken cancellationToken)
-        {
-            return await _outOfServiceQuery.GetOutOfServiceValidity(request, cancellationToken: cancellationToken);
-        }
+        public async Task<GetOutOfServiceValidityQueryResponse?> Handle(GetOutOfServiceValidityQuery request, CancellationToken cancellationToken)
+            => await _outOfServiceQuery.GetOutOfServiceValidity(request, cancellationToken: cancellationToken);
     }
 }

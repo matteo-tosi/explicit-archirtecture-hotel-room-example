@@ -1,23 +1,23 @@
 ﻿using DotNetExtensions.LambdaExpression.Converter;
 using HotelResourceDdd.Core.Component.RoomComponent.Application.Repository;
 using HotelResourceDdd.Core.Component.RoomComponent.Domain.RoomAggregate;
-using HotelResourceDdd.Core.Port.EventManager;
 using HotelResourceDdd.Core.SharedKernel.Component.RoomComponent.RoomAggregate;
 using HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.RoomComponent.RoomAggregate.Model;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.RoomComponent.RoomAggregate
 {
-    internal class RoomRepository : IRoomRepository
+    public class RoomRepository : IRoomRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IEventManager _eventManager;
+        private readonly IMediator _notificationPublisher;
 
-        public RoomRepository(ApplicationDbContext context, IEventManager eventManager)
+        public RoomRepository(ApplicationDbContext context, IMediator notificationPublisher)
         {
             _context = context;
-            _eventManager = eventManager;
+            _notificationPublisher = notificationPublisher;
         }
 
         public void Add(Room entity)
@@ -45,7 +45,7 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.RoomCompo
             // Lancia tutti gli eventi di dominio
             foreach (var de in aggregateRoot.DomainEvents)
             {
-                await _eventManager.Publish(de, cancellationToken: cancellationToken);
+                await _notificationPublisher.Publish(de, cancellationToken: cancellationToken);
             }
 
             // Resetta gli eventi

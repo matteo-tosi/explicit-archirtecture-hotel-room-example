@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\..\lib\.net-extensions\src\DotNetExtensions\DotNetExtensions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Port\" />
+  </ItemGroup>
+
 </Project>

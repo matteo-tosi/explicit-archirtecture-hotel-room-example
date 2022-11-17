@@ -5,7 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.OutOfServiceComponent.OutOfServiceAggregate.Query
 {
-    internal class OutOfServiceQuery : IOutOfServiceQuery
+    public class OutOfServiceQuery : IOutOfServiceQuery
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMemoryCache _cache;

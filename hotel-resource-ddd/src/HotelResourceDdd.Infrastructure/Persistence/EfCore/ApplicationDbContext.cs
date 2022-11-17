@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelResourceDdd.Infrastructure.Persistence.EfCore
 {
-    internal sealed class ApplicationDbContext : DbContext
+    public sealed class ApplicationDbContext : DbContext
     {
         public DbSet<OutOfServiceDb> OutOfService { get; set; }
         public DbSet<RoomDb> Room { get; set; }

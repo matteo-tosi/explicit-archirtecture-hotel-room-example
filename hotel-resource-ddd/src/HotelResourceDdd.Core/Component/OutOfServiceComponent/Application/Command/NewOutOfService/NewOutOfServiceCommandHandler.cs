@@ -1,14 +1,13 @@
-﻿using DotNetExtensions.DomainAbstraction.Event;
+﻿using DotNetExtensions.CqrsAbstraction.Command;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Repository;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Domain.OutOfServiceAggregate;
 using HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate;
 using HotelResourceDdd.Core.SharedKernel.Component.RoomComponent.RoomAggregate;
 using HotelResourceDdd.Core.SharedKernel.ValueObject;
-using MediatR;
 
 namespace HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Command.NewOutOfService
 {
-    internal class NewOutOfServiceCommandHandler : AbstractEventHandler<NewOutOfServiceCommand>
+    public class NewOutOfServiceCommandHandler : ICommandHandler<NewOutOfServiceCommand, NewOutOfServiceCommandResult?>
     {
         private readonly IOutOfServiceRepository _outOfServiceRepository;
 
@@ -17,19 +16,18 @@ namespace HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Comm
             _outOfServiceRepository = outOfServiceRepository;
         }
 
-        public override async Task<Unit> Handle(NewOutOfServiceCommand request, CancellationToken cancellationToken)
+        public async Task<NewOutOfServiceCommandResult?> Handle(NewOutOfServiceCommand command, CancellationToken cancellationToken)
         {
             var newOutOfService = new OutOfService(
-                new OutOfServiceId(request.OutOfServiceId),
-                new LicenseNumber(request.LicenseNumber),
-                new RoomId(request.RoomId), request.In, request.Out);
+                new OutOfServiceId(command.OutOfServiceId),
+                new LicenseNumber(command.LicenseNumber),
+                new RoomId(command.RoomId), command.In, command.Out);
 
             _outOfServiceRepository.Add(newOutOfService);
 
             await _outOfServiceRepository.SaveAsync(newOutOfService, cancellationToken: cancellationToken);
 
-            // Per il momento non interessa il ritorno.
-            return new Unit();
+            return null;
         }
     }
 }
