@@ -1,9 +1,9 @@
 ﻿using DotNetExtensions.LambdaExpression.Converter;
+using DotNetExtensions.Mediator;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Repository;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Domain.OutOfServiceAggregate;
 using HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate;
 using HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.OutOfServiceComponent.OutOfServiceAggregate.Model;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -12,9 +12,9 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.OutOfServ
     public class OutOfServiceRepository : IOutOfServiceRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMediator _notificationPublisher;
+        private readonly IEventPublisher _notificationPublisher;
 
-        public OutOfServiceRepository(ApplicationDbContext context, IMediator notificationPublisher)
+        public OutOfServiceRepository(ApplicationDbContext context, IEventPublisher notificationPublisher)
         {
             _context = context;
             _notificationPublisher = notificationPublisher;

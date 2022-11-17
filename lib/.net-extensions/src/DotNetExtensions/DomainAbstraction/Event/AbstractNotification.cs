@@ -2,7 +2,7 @@
 
 namespace DotNetExtensions.DomainAbstraction.Event
 {
-    public abstract class AbstractNotification : AbstractEventBase, IEventMoreListener
+    public abstract class AbstractNotification : AbstractEventBase, IBroadcastEvent
     {
         public AbstractNotification() : base()
         { }

@@ -1,8 +1,8 @@
-﻿using DotNetExtensions.CqrsAbstraction.Command;
+﻿using DotNetExtensions.DomainAbstraction.Event;
 
 namespace HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Command.NewOutOfService
 {
-    public sealed class NewOutOfServiceCommand : ICommand
+    public sealed class NewOutOfServiceCommand : AbstractSingleEvent<NewOutOfServiceCommandResult>
     {
         public int OutOfServiceId { get; set; }
         public int LicenseNumber { get; set; }

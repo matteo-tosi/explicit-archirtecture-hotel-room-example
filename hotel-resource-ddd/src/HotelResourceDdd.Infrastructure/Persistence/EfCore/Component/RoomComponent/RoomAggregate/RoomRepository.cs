@@ -1,9 +1,9 @@
 ﻿using DotNetExtensions.LambdaExpression.Converter;
+using DotNetExtensions.Mediator;
 using HotelResourceDdd.Core.Component.RoomComponent.Application.Repository;
 using HotelResourceDdd.Core.Component.RoomComponent.Domain.RoomAggregate;
 using HotelResourceDdd.Core.SharedKernel.Component.RoomComponent.RoomAggregate;
 using HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.RoomComponent.RoomAggregate.Model;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -12,9 +12,9 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.RoomCompo
     public class RoomRepository : IRoomRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMediator _notificationPublisher;
+        private readonly IEventPublisher _notificationPublisher;
 
-        public RoomRepository(ApplicationDbContext context, IMediator notificationPublisher)
+        public RoomRepository(ApplicationDbContext context, IEventPublisher notificationPublisher)
         {
             _context = context;
             _notificationPublisher = notificationPublisher;

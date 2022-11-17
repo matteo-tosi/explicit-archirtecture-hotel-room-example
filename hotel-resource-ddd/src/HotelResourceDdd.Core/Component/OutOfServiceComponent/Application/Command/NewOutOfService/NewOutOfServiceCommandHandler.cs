@@ -1,4 +1,4 @@
-﻿using DotNetExtensions.CqrsAbstraction.Command;
+﻿using DotNetExtensions.DomainAbstraction.Event;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Repository;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Domain.OutOfServiceAggregate;
 using HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate;
@@ -7,7 +7,7 @@ using HotelResourceDdd.Core.SharedKernel.ValueObject;
 
 namespace HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Command.NewOutOfService
 {
-    public class NewOutOfServiceCommandHandler : ICommandHandler<NewOutOfServiceCommand, NewOutOfServiceCommandResult?>
+    public class NewOutOfServiceCommandHandler : AbstractSingleEventHandler<NewOutOfServiceCommand, NewOutOfServiceCommandResult?>
     {
         private readonly IOutOfServiceRepository _outOfServiceRepository;
 
@@ -16,7 +16,7 @@ namespace HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Comm
             _outOfServiceRepository = outOfServiceRepository;
         }
 
-        public async Task<NewOutOfServiceCommandResult?> Handle(NewOutOfServiceCommand command, CancellationToken cancellationToken)
+        public override async Task<NewOutOfServiceCommandResult?> Handle(NewOutOfServiceCommand command, CancellationToken cancellationToken)
         {
             var newOutOfService = new OutOfService(
                 new OutOfServiceId(command.OutOfServiceId),

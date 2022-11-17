@@ -2,5 +2,5 @@
 
 namespace DotNetExtension.Mediator
 {
-    public interface IEventMoreListener : INotification { }
+    public interface IBroadcastEvent : INotification { }
 }

@@ -2,7 +2,7 @@
 
 namespace DotNetExtension.Mediator
 {
-    public interface IEventHandlerMoreListener<in TRequest> : INotificationHandler<TRequest>
+    public interface IBroadcastEventHandler<in TRequest> : INotificationHandler<TRequest>
         where TRequest : INotification
     { }
 }
