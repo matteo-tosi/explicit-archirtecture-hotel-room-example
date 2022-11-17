@@ -1,6 +1,6 @@
+using DotNetExtension.Mediator;
 using DotNetExtensions.CqrsAbstraction.Command;
 using DotNetExtensions.CqrsAbstraction.Query;
-using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Command.NewOutOfService;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Query;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Repository;
 using HotelResourceDdd.Core.Component.RoomComponent.Application.Repository;
@@ -57,6 +57,13 @@ builder.Services.Scan(selector =>
     _ = selector.FromApplicationDependencies()
         .AddClasses(filter =>
             filter.AssignableTo(typeof(ICommandHandler<,>)))
+        .AsImplementedInterfaces()
+        .WithSingletonLifetime());
+
+builder.Services.Scan(selector =>
+    _ = selector.FromApplicationDependencies()
+        .AddClasses(filter =>
+            filter.AssignableTo(typeof(IEventHandlerMoreListener<>)))
         .AsImplementedInterfaces()
         .WithSingletonLifetime());
 
