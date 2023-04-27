@@ -1,5 +1,6 @@
 ﻿using DotNetExtensions.LambdaExpression.Converter;
-using DotNetExtensions.Mediator;
+using DotNetExtensions.Mediator.Cqrs;
+using DotNetExtensions.Mediator.Domain;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Repository;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Domain.OutOfServiceAggregate;
 using HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate;
@@ -12,12 +13,12 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.OutOfServ
     public class OutOfServiceRepository : IOutOfServiceRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IEventPublisher _notificationPublisher;
+        private readonly IDomainEventPublisher _domainEventPublisher;
 
-        public OutOfServiceRepository(ApplicationDbContext context, IEventPublisher notificationPublisher)
+        public OutOfServiceRepository(ApplicationDbContext context, IDomainEventPublisher domainEventPublisher)
         {
             _context = context;
-            _notificationPublisher = notificationPublisher;
+            _domainEventPublisher = domainEventPublisher;
         }
 
         public void Add(OutOfService entity)
@@ -46,7 +47,7 @@ namespace HotelResourceDdd.Infrastructure.Persistence.EfCore.Component.OutOfServ
             // Lancia tutti gli eventi di dominio
             foreach (var de in aggregateRoot.DomainEvents)
             {
-                await _notificationPublisher.Publish(de, cancellationToken: cancellationToken);
+                await _domainEventPublisher.Publish(de, cancellationToken: cancellationToken);
             }
 
             // Resetta gli eventi

@@ -1,5 +1,7 @@
 using DotNetExtension.Mediator;
-using DotNetExtensions.Mediator;
+using DotNetExtension.Mediator.Domain;
+using DotNetExtensions.Mediator.Cqrs;
+using DotNetExtensions.Mediator.Domain;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Query;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Repository;
 using HotelResourceDdd.Core.Component.RoomComponent.Application.Repository;
@@ -31,7 +33,8 @@ builder.Services.AddMemoryCache();
 var assembly = AppDomain.CurrentDomain.Load("DotNetExtensions");
 _ = builder.Services.AddMediatR(assembly);
 
-builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+builder.Services.AddScoped<IDomainEventPublisher, DomainEventPublisher>();
+builder.Services.AddScoped<ICqrsEventPublisher, CqrsEventPublisher>();
 
 builder.Services.AddScoped<IOutOfServiceQuery, OutOfServiceQuery>();
 builder.Services.AddScoped<IOutOfServiceRepository, OutOfServiceRepository>();
@@ -42,7 +45,7 @@ builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.Scan(selector =>
     _ = selector.FromApplicationDependencies()
         .AddClasses(filter =>
-            filter.AssignableTo(typeof(IBroadcastEventHandler<>)))
+            filter.AssignableTo(typeof(IDomainEventHandler<>)))
         .AsImplementedInterfaces()
         .WithScopedLifetime());
 
@@ -51,7 +54,16 @@ builder.Services.Scan(selector =>
 builder.Services.Scan(selector =>
     _ = selector.FromApplicationDependencies()
         .AddClasses(filter =>
-            filter.AssignableTo(typeof(ISingleEventHandler<,>)))
+            filter.AssignableTo(typeof(ICommandEventHandler<,>)))
+        .AsImplementedInterfaces()
+        .WithScopedLifetime());
+
+// INFO: Using https://www.nuget.org/packages/Scrutor for registering all Query and Command handlers by convention
+// 'FromApplicationDependencies' because handlers are in different assembly "HotelResourseDdd.Core"
+builder.Services.Scan(selector =>
+    _ = selector.FromApplicationDependencies()
+        .AddClasses(filter =>
+            filter.AssignableTo(typeof(IQueryEventHandler<,>)))
         .AsImplementedInterfaces()
         .WithScopedLifetime());
 

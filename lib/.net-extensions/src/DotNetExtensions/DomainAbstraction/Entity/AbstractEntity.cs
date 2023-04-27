@@ -1,17 +1,17 @@
-﻿using DotNetExtensions.DomainAbstraction.Event;
+﻿using DotNetExtensions.DomainAbstraction.Event.Domain;
 
 namespace DotNetExtensions.DomainAbstraction.Entity
 {
     public abstract class AbstractEntity
     {
-        public IReadOnlyCollection<AbstractNotification> DomainEvents => _domainEvents.AsReadOnly();
+        public IReadOnlyCollection<AbstractDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
-        private readonly List<AbstractNotification> _domainEvents = new();
+        private readonly List<AbstractDomainEvent> _domainEvents = new();
 
-        public void AddDomainEvent(AbstractNotification domainEvent)
+        public void AddDomainEvent(AbstractDomainEvent domainEvent)
             => _domainEvents.Add(domainEvent);
 
-        public void RemoveDomainEvent(AbstractNotification domainEvent)
+        public void RemoveDomainEvent(AbstractDomainEvent domainEvent)
             => _domainEvents.Remove(domainEvent);
 
         public void ClearDomainEvents()

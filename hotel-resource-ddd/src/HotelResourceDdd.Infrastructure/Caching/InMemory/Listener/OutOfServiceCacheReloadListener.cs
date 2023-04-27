@@ -1,10 +1,10 @@
-﻿using DotNetExtensions.DomainAbstraction.Event;
+﻿using DotNetExtensions.DomainAbstraction.Event.Domain;
 using HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate.Event;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace HotelResourceDdd.Infrastructure.Caching.InMemory.Listener
 {
-    internal class OutOfServiceCacheReloadListener : AbstractNotificationHandler<NewOutOfServiceAddedEvent>
+    internal class OutOfServiceCacheReloadListener : AbstractDomainEventHandler<NewOutOfServiceAddedEvent>
     {
         private readonly IMemoryCache _cache;
 

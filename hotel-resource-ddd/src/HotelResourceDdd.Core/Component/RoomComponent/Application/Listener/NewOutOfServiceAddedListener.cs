@@ -1,10 +1,10 @@
-﻿using DotNetExtensions.DomainAbstraction.Event;
+﻿using DotNetExtensions.DomainAbstraction.Event.Domain;
 using HotelResourceDdd.Core.Component.RoomComponent.Application.Repository;
 using HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate.Event;
 
 namespace HotelResourceDdd.Core.Component.RoomComponent.Application.Listener
 {
-    public class NewOutOfServiceAddedListener : AbstractNotificationHandler<NewOutOfServiceAddedEvent>
+    public class NewOutOfServiceAddedListener : AbstractDomainEventHandler<NewOutOfServiceAddedEvent>
     {
         private readonly IRoomRepository _roomRepository;
 

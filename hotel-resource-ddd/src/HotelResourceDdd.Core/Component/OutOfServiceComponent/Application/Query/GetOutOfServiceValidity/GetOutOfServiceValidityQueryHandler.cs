@@ -1,8 +1,8 @@
-﻿using DotNetExtensions.DomainAbstraction.Event;
+﻿using DotNetExtensions.DomainAbstraction.Event.Cqrs;
 
 namespace HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Query.GetOutOfServiceValidity
 {
-    internal class GetOutOfServiceValidityQueryHandler : AbstractSingleEventHandler<GetOutOfServiceValidityQuery, GetOutOfServiceValidityQueryResponse?>
+    internal class GetOutOfServiceValidityQueryHandler : AbstractQueryEventHandler<GetOutOfServiceValidityQuery, GetOutOfServiceValidityQueryResponse?>
     {
         private readonly IOutOfServiceQuery _outOfServiceQuery;
         public GetOutOfServiceValidityQueryHandler(IOutOfServiceQuery outOfServiceQuery)

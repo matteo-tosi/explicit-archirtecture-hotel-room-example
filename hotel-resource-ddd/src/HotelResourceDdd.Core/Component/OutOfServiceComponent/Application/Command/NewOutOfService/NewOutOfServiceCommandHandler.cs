@@ -1,4 +1,4 @@
-﻿using DotNetExtensions.DomainAbstraction.Event;
+﻿using DotNetExtensions.DomainAbstraction.Event.Cqrs;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Repository;
 using HotelResourceDdd.Core.Component.OutOfServiceComponent.Domain.OutOfServiceAggregate;
 using HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate;
@@ -7,7 +7,7 @@ using HotelResourceDdd.Core.SharedKernel.ValueObject;
 
 namespace HotelResourceDdd.Core.Component.OutOfServiceComponent.Application.Command.NewOutOfService
 {
-    public class NewOutOfServiceCommandHandler : AbstractSingleEventHandler<NewOutOfServiceCommand, NewOutOfServiceCommandResult?>
+    public class NewOutOfServiceCommandHandler : AbstractCommandEventHandler<NewOutOfServiceCommand, NewOutOfServiceCommandResult?>
     {
         private readonly IOutOfServiceRepository _outOfServiceRepository;
 

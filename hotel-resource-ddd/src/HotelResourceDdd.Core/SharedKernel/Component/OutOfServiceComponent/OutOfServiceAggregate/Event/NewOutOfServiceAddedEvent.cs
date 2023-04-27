@@ -1,10 +1,10 @@
-﻿using DotNetExtensions.DomainAbstraction.Event;
+﻿using DotNetExtensions.DomainAbstraction.Event.Domain;
 using HotelResourceDdd.Core.SharedKernel.Component.RoomComponent.RoomAggregate;
 using HotelResourceDdd.Core.SharedKernel.ValueObject;
 
 namespace HotelResourceDdd.Core.SharedKernel.Component.OutOfServiceComponent.OutOfServiceAggregate.Event
 {
-    public class NewOutOfServiceAddedEvent : AbstractNotification
+    public class NewOutOfServiceAddedEvent : AbstractDomainEvent
     {
         public LicenseNumber LicenseNumber { get; private set; }
         public OutOfServiceId OutOfServiceId { get; private set; }
